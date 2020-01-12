@@ -1,0 +1,37 @@
+organism,year,location,density,ci
+surgeonfish,2009,Rarotonga,250,32
+coral trout,2009,Rarotonga,120,21
+spotted damsel,2009,Rarotonga,520,47
+yellow damsel,2009,Rarotonga,32,15
+surgeonfish,2009,Aitutaki,360,32
+coral trout,2009,Aitutaki,170,21
+spotted damsel,2009,Aitutaki,910,47
+yellow damsel,2009,Aitutaki,36,15
+mounding corals,2009,Rarotonga,19.5,3.5
+coarse-branching corals,2009,Rarotonga,2.8,0.5
+fine-branching corals,2009,Rarotonga,2.2,0.9
+sea anemones,2009,Rarotonga,1,0.1
+algae,2009,Rarotonga,1.7,0.8
+mounding corals,2009,Aitutaki,14.5,3.5
+coarse-branching corals,2009,Aitutaki,3.2,0.5
+fine-branching corals,2009,Aitutaki,2.5,0.9
+sea anemones,2009,Aitutaki,1.8,0.1
+algae,2009,Aitutaki,0.8,0.8
+surgeonfish,2018,Rarotonga,20,32
+coral trout,2018,Rarotonga,4,21
+spotted damsel,2018,Rarotonga,19,47
+yellow damsel,2018,Rarotonga,90,15
+surgeonfish,2018,Aitutaki,390,32
+coral trout,2018,Aitutaki,40,21
+spotted damsel,2018,Aitutaki,257,47
+yellow damsel,2018,Aitutaki,80,15
+mounding corals,2018,Rarotonga,18,3.5
+coarse-branching corals,2018,Rarotonga,0.7,0.5
+fine-branching corals,2018,Rarotonga,0.3,0.9
+sea anemones,2018,Rarotonga,0.5,0.1
+algae,2018,Rarotonga,5.5,0.8
+mounding corals,2018,Aitutaki,15.9,3.5
+coarse-branching corals,2018,Aitutaki,2.4,0.5
+fine-branching corals,2018,Aitutaki,3.2,0.9
+sea anemones,2018,Aitutaki,0.9,0.1
+algae,2018,Aitutaki,0.4,0.8

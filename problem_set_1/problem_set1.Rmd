@@ -355,9 +355,91 @@ scatter_sp2
 
 
 
-
 ##Question 5
+Tasks:  
+  - Calculate the density of adults per area of bottom covered by the microhabitat used by the young (for each lagoon and year)    
+  - Graph them (similar to questions one and two)  
+  
+  
+```{r num5-density-calcs, include=FALSE}
+#surgeonfish:
+surg2 <- surg_calcs %>% 
+  mutate("adult_micro" = density / micro_density)
 
+#coral trout:
+trout2 <- trout %>%
+  mutate("adult_micro" = density / micro_density)
+
+#yellow damsel:
+yellow2 <- yellow %>%
+  mutate("adult_micro" = density / micro_density)
+
+#spotted damsel:
+spotted2 <- spotted %>% 
+  mutate("adult_micro" = density / micro_density)
+```
+
+```{r num5-graphs}
+#surgeonfish:
+density_surg2 <- ggplot(surg2, aes(x=location, y=adult_micro, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,150), breaks = seq(0,150,50)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Adults (per 100 m$^2$ of Fine-branching Coral)",
+       x = "Island",
+       title = "Density of Surgeonfish per Area of Juvenile Habitat")
+density_surg2
+
+#Coral trout:
+density_trout2 <- ggplot(trout2, aes(x=location, y=adult_micro, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,55), breaks = seq(0,50,10)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Adults (per 100 m$^2$ of Coarse-branching Coral)",
+       x = "Island",
+       title = "Density of Coral Trout per Area of Juvenile Habitat")
+density_trout2
+
+#Yellow damselfish:
+density_yellow2 <- ggplot(yellow2, aes(x=location, y=adult_micro, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,6), breaks = seq(0,6,2)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Adults (per 100 m$^2$ of Mounding Coral)",
+       x = "Island",
+       title = "Density of Yellow Damselfish per Area of Juvenile Habitat")
+density_yellow2
+
+#Spotted damselfish:
+density_spot2 <- ggplot(spotted2, aes(x=location, y=adult_micro, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,525), breaks = seq(0,500,100)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Adults (per 100 m$^2$ of Sea Anemone)",
+       x = "Island",
+       title = "Density of Spotted Damselfish per Area of Juvenile Habitat")
+density_spot2
+```
 
 
 ##Question 6
+Tasks:  
+  - Scatterplots (adult density) with trend line and r-squared value  
+  - Surgeon vs. Coral Trout  
+  - Surgeon vs. Yellow Damselfish  
+  - Surgeon vs. Spotted Damselfish  
+  - Coral Trout vs. Yellow Damselfish  
+  - Coral Trout vs. Spotted Damselfish  
+  - Yellow Damselfish vs. Spotted Damselfish  

@@ -300,6 +300,58 @@ scatter_sp
 
 
 ##Question 4
+Scatterplots of adult density (y axis) vs. density of microhabitat used by young (x axis)  
+
+```{r density-habitat-graphs, echo=FALSE}
+#surgeonfish:
+scatter_s2 <- ggplot(surg_calcs, aes(x = micro_density, y = density)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,410), breaks = seq(0,400,100)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,4), breaks = seq(0,4,1)) + 
+  labs(x = "Fine-Branching Coral Density (m$^2$/100 m$^2$)", 
+       y = "Density of Adults (# per 100 m$^2$)", 
+       title = "Microhabitat vs. Adult Surgeonfish Density") +
+  theme_bw()
+scatter_s2
+
+#coral trout:
+scatter_t2 <- ggplot(trout_calcs, aes(x = micro_density, y = density)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_x_continuous(expand = c(0,0), limits = c(0,4), breaks = seq(0,4,1)) +
+  scale_y_continuous(expand = c(0,0.5), limits = c(0,175), breaks = seq(0,150,50)) + 
+  labs(x = "Coarse-Branching Coral Density (m$^2$/100 m$^2$)", 
+       y = "Density of Adults (# per 100 m$^2$)", 
+       title = "Microhabitat vs. Adult Coral Trout Density") +
+  theme_bw()
+scatter_t2
+
+#yellow damsel:
+scatter_y2 <- ggplot(yellow_calcs, aes(x = micro_density, y = density)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_x_continuous(expand = c(0,0), limits = c(14,20), breaks = seq(14,20,1)) +
+  scale_y_continuous(expand = c(0,0), limits = c(30,95), breaks = seq(30,90,30)) +
+  labs(x = "Mounding Density (m$^2$/100 m$^2$)", 
+       y = "Density of Adults (# per 100 m$^2$)", 
+       title = "Microhabitat vs. Adult Yellow Damselfish Density") +
+  theme_bw()
+scatter_y2
+
+#spotted damsel: 
+scatter_sp2 <- ggplot(spotted_calcs, aes(x = micro_density, y = density)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_x_continuous(expand = c(0,0), limits = c(0.4,2), breaks = seq(0.5,2,0.5)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,950), breaks = seq(0,900,300)) +
+  labs(x = "Sea Anemone Density (m$^2$/100 m$^2$)", 
+       y = "Density of Adults (# per 100 m$^2$)", 
+       title = "Microhabitat vs. Adult Spotted Damselfish Density") +
+  theme_bw()
+scatter_sp2
+
+```
 
 
 

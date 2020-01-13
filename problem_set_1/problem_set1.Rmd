@@ -2,7 +2,9 @@
 title: "problem_set1"
 author: "Sara Orofino"
 date: "1/12/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 #{.tabset}
 ```{r setup, include=FALSE, warning=FALSE}

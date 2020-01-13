@@ -178,6 +178,124 @@ recruit_spot
 
 
 ##Question 3
+Tasks:  
+  - Calculate the density of fish per 100 m2 area of reef    
+  - Make a scatterplot of relationship between density of recruits and adults    
+  
+###Density
+The density data gives the coverage of each microhabitat per 100 m$^2$ of reef. The recruitment density is per 1 m$^2$ of microhabitat. To get the density of recruits per 100 m$^2$ of reef, multiply the number of recruits by the density data number for the microhabitat.    
+
+```{r density-calcs, include = FALSE}
+####Calculate recruits by microhabitat 
+
+##surgeonfish - fine-branching coral
+#Isolate microhabitat
+micro_s <- density %>% 
+  filter(organism == "fine-branching corals")
+#Store density
+micro_density <- micro_s$density
+#Add to surg density data
+surg$micro_density <- micro_density
+#Store density of recruits:
+surg$recruits <- surg_r$recruits
+#Calculate the number of recruits per 100 m2 of appropriate microhabitat
+surg_calcs <- surg %>%
+  mutate("recruits_100" = micro_density * recruits)
+
+
+#coral trout - coarse-branching coral
+#Isolate microhabitat
+micro_t <- density %>% 
+  filter(organism == "coarse-branching corals")
+#Store density
+micro_density <- micro_t$density
+#Add to surg density data
+trout$micro_density <- micro_density
+#Store density of recruits:
+trout$recruits <- trout_r$recruits
+#Calculate the number of recruits per 100 m2 of appropriate microhabitat
+trout_calcs <- trout %>%
+  mutate("recruits_100" = micro_density * recruits)
+
+#yellow damsel - mounding
+#Isolate microhabitat
+micro_y <- density %>% 
+  filter(organism == "mounding corals")
+#Store density
+micro_density <- micro_y$density
+#Add to surg density data
+yellow$micro_density <- micro_density
+#Store density of recruits:
+yellow$recruits <- yellow_r$recruits
+#Calculate the number of recruits per 100 m2 of appropriate microhabitat
+yellow_calcs <- yellow %>%
+  mutate("recruits_100" = micro_density * recruits)
+
+#spotted damsel - sea anemone
+#Isolate microhabitat
+micro_sp <- density %>% 
+  filter(organism == "sea anemones")
+#Store density
+micro_density <- micro_sp$density
+#Add to surg density data
+spotted$micro_density <- micro_density
+#Store density of recruits:
+spotted$recruits <- spotted_r$recruits
+#Calculate the number of recruits per 100 m2 of appropriate microhabitat
+spotted_calcs <- spotted %>%
+  mutate("recruits_100" = micro_density * recruits)
+```
+
+```{r scatterplots, echo = FALSE}
+#surgeonfish:
+scatter_s <- ggplot(surg_calcs, aes(x = density, y = recruits_100)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,85), breaks = seq(0,80,20)) +
+  scale_x_continuous(expand = c(0,0.5), limits = c(0,401), breaks = seq(0,400,100)) + 
+  labs(x = "Density of Adults (# per 100 m$^2$)", 
+       y = "Density of Recruits (# per 100 m$^2$)", 
+       title = "Surgeonfish Adult vs. Recruitment Density") +
+  theme_bw()
+scatter_s
+
+#coral trout:
+scatter_t <- ggplot(trout_calcs, aes(x = density, y = recruits_100)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,40), breaks = seq(0,40,10)) +
+  scale_x_continuous(expand = c(0,0.5), limits = c(0,175), breaks = seq(0,150,50)) + 
+  labs(x = "Density of Adults (# per 100 m$^2$)", 
+       y = "Density of Recruits (# per 100 m$^2$)", 
+       title = "Coral Trout Adult vs. Recruitment Density") +
+  theme_bw()
+scatter_t
+
+#yellow damsel:
+scatter_y <- ggplot(yellow_calcs, aes(x = density, y = recruits_100)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,860), breaks = seq(0,850,150)) +
+  scale_x_continuous(expand = c(0,0), limits = c(30,92), breaks = seq(30,90,10)) +
+  labs(x = "Density of Adults (# per 100 m$^2$)", 
+       y = "Density of Recruits (# per 100 m$^2$)", 
+       title = "Yellow Damselfish Adult vs. Recruitment Density") +
+  theme_bw()
+scatter_y
+
+#spotted damsel: 
+scatter_sp <- ggplot(spotted_calcs, aes(x = density, y = recruits_100)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,20), breaks = seq(0,20,5)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,920), breaks = seq(0,900,100)) +
+  labs(x = "Density of Adults (# per 100 m$^2$)", 
+       y = "Density of Recruits (# per 100 m$^2$)", 
+       title = "Spotted Damselfish Adult vs. Recruitment Density") +
+  theme_bw()
+scatter_sp
+```
+
 
 
 

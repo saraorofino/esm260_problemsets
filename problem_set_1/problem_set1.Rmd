@@ -379,7 +379,7 @@ spotted2 <- spotted %>%
   mutate("adult_micro" = density / micro_density)
 ```
 
-```{r num5-graphs}
+```{r num5-graphs, echo=FALSE}
 #surgeonfish:
 density_surg2 <- ggplot(surg2, aes(x=location, y=adult_micro, fill = location)) + 
   geom_col(width = 0.95, alpha = 0.7) + 
@@ -436,10 +436,107 @@ density_spot2
 
 ##Question 6
 Tasks:  
-  - Scatterplots (adult density) with trend line and r-squared value  
-  - Surgeon vs. Coral Trout  
-  - Surgeon vs. Yellow Damselfish  
-  - Surgeon vs. Spotted Damselfish  
-  - Coral Trout vs. Yellow Damselfish  
-  - Coral Trout vs. Spotted Damselfish  
-  - Yellow Damselfish vs. Spotted Damselfish  
+  - Scatterplots (adult density) with trend line and r-squared value    
+  - Surgeon vs. Coral Trout    
+  - Surgeon vs. Yellow Damselfish    
+  - Surgeon vs. Spotted Damselfish    
+  - Coral Trout vs. Yellow Damselfish    
+  - Coral Trout vs. Spotted Damselfish    
+  - Yellow Damselfish vs. Spotted Damselfish   
+
+```{r num6-wrangle, include=FALSE}
+#Get the density counts for coral trout, yellow damsel, and spotted damsel
+density_t <- trout$density
+density_y <- yellow$density
+density_sp <- spotted$density
+#Combine with surgeonfish
+surg$density_t <- density_t
+surg$density_y <- density_y
+surg$density_sp <- density_sp
+
+#Combine yellow and spotted with coral trout:
+trout$density_y <- density_y
+trout$density_sp <- density_sp
+
+#Combine spotted with yellow:
+yellow$density_sp <- density_sp
+```
+  
+```{r num6-plots, echo=FALSE}
+##Surgeonfish on x-axis:
+
+#vs. coral trout
+scatter_st <- ggplot(surg, aes(x = density, y = density_t)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,200), breaks = seq(0,200,50)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,400), breaks = seq(0,400,100)) + 
+  labs(x = "Density of Adult Surgeonfish (# per 100 m$^2$)", 
+       y = "Density of Adult Coral Trout (# per 100 m$^2$)", 
+       title = "Adult Surgeonfish vs. Adult Coral Trout Density") +
+  theme_bw()
+scatter_st
+
+#vs. yellow damsel:
+scatter_sy <- ggplot(surg, aes(x = density, y = density_y)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,100), breaks = seq(0,100,25)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,400), breaks = seq(0,400,100)) + 
+  labs(x = "Density of Adult Surgeonfish (# per 100 m$^2$)", 
+       y = "Density of Adult Yellow Damselfish (# per 100 m$^2$)", 
+       title = "Adult Surgeonfish vs. Adult Yellow Damselfish Density") +
+  theme_bw()
+scatter_sy
+
+#vs. spotted damselfish:
+scatter_ssp <- ggplot(surg, aes(x = density, y = density_sp)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,920), breaks = seq(0,900,300)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,400), breaks = seq(0,400,100)) + 
+  labs(x = "Density of Adult Surgeonfish (# per 100 m$^2$)", 
+       y = "Density of Adult Spotted Damselfish (# per 100 m$^2$)", 
+       title = "Adult Surgeonfish vs. Adult Spotted Damselfish Density") +
+  theme_bw()
+scatter_ssp
+
+##Coral Trout on x-axis 
+#vs. yellow damselfish:
+scatter_ty <- ggplot(trout, aes(x = density, y = density_y)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,100), breaks = seq(0,100,25)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,200), breaks = seq(0,200,50)) + 
+  labs(x = "Density of Adult Coral Trout (# per 100 m$^2$)", 
+       y = "Density of Adult Yellow Damselfish (# per 100 m$^2$)", 
+       title = "Adult Coral Trout vs. Adult Yellow Damselfish Density") +
+  theme_bw()
+scatter_ty
+
+#vs. spotted damselfish:
+scatter_tsp <- ggplot(trout, aes(x = density, y = density_sp)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,920), breaks = seq(0,900,300)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,200), breaks = seq(0,200,50)) + 
+  labs(x = "Density of Adult Coral Trout (# per 100 m$^2$)", 
+       y = "Density of Adult Spotted Damselfish (# per 100 m$^2$)", 
+       title = "Adult Coral Trout vs. Adult Spotted Damselfish Density") +
+  theme_bw()
+scatter_tsp
+
+##yellow damselfish on the x-axis
+#vs. spotted damselfish:
+scatter_ysp <- ggplot(yellow, aes(x = density, y = density_sp)) + 
+  geom_point(alpha = 0.7) + 
+  geom_smooth(method = "lm", se = FALSE, color = "grey38") + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,920), breaks = seq(0,900,300)) +
+  scale_x_continuous(expand = c(0,0), limits = c(25,100), breaks = seq(0,100,25)) + 
+  labs(x = "Density of Adult Yellow Damselfish (# per 100 m$^2$)", 
+       y = "Density of Adult Spotted Damselfish (# per 100 m$^2$)", 
+       title = "Adult Yellow Damselfish vs. Adult Spotted Damselfish Density") +
+  theme_bw()
+scatter_ysp
+```
+

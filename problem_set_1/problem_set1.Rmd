@@ -39,7 +39,7 @@ spotted <- density %>%
 #surgeonfish:
 density_surg <- ggplot(surg, aes(x=location, y=density, fill = location)) + 
   geom_col(width = 0.95, alpha = 0.7) + 
-  geom_errorbar(aes(ymin = density - 32, ymax = density + 32), width = 0.5) +
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
   facet_wrap(~year) + 
   scale_y_continuous(expand = c(0,0), limits = c(-20,450), breaks = seq(0,400,100)) + 
   scale_x_discrete(expand = c(0,0)) + 
@@ -53,7 +53,7 @@ density_surg
 #Coral trout:
 density_trout <- ggplot(trout, aes(x=location, y=density, fill = location)) + 
   geom_col(width = 0.95, alpha = 0.7) + 
-  geom_errorbar(aes(ymin = density - 21, ymax = density + 21), width = 0.5) +
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
   facet_wrap(~year) + 
   scale_y_continuous(expand = c(0,0), limits = c(-20,200), breaks = seq(0,200,50)) + 
   scale_x_discrete(expand = c(0,0)) + 
@@ -67,7 +67,7 @@ density_trout
 #Yellow damselfish:
 density_yellow <- ggplot(yellow, aes(x=location, y=density, fill = location)) + 
   geom_col(width = 0.95, alpha = 0.7) + 
-  geom_errorbar(aes(ymin = density - 15, ymax = density + 15), width = 0.5) +
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
   facet_wrap(~year) + 
   scale_y_continuous(expand = c(0,0), limits = c(0,110), breaks = seq(0,100,25)) + 
   scale_x_discrete(expand = c(0,0)) + 
@@ -81,7 +81,7 @@ density_yellow
 #Spotted damselfish:
 density_spot <- ggplot(spotted, aes(x=location, y=density, fill = location)) + 
   geom_col(width = 0.95, alpha = 0.7) + 
-  geom_errorbar(aes(ymin = density - 47, ymax = density + 47), width = 0.5) +
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
   facet_wrap(~year) + 
   scale_y_continuous(expand = c(0,0), limits = c(-35,965), breaks = seq(0,900,150)) + 
   scale_x_discrete(expand = c(0,0)) + 
@@ -97,7 +97,84 @@ density_spot
 ##Question 2
 ###Compare and contrast changes in density of recruits  
 Tasks:  
-  - Make a histogram of density of recruits for each organism on both Rarotonga and Aitutaki in 2009 and 2018
+  - Make a column graph of density of recruits for each organism on both Rarotonga and Aitutaki in 2009 and 2018
+
+
+```{r wrangle-recruits, include=FALSE}
+surg_r <- recruits %>% 
+  filter(fish == "surgeonfish") %>% 
+  filter(recruits != 0)
+
+trout_r <- recruits %>%
+  filter(fish == "coral trout") %>% 
+  filter(recruits != 0)
+
+yellow_r <- recruits %>% 
+  filter(fish == "yellow damsel") %>% 
+  filter(recruits != 0)
+
+spotted_r <- recruits %>%
+  filter(fish == "spotted damsel") %>% 
+  filter(recruits != 0)
+```
+
+```{r recruits-graph, echo=FALSE}
+#surgeonfish:
+recruit_surg <- ggplot(surg_r, aes(x=location, y=recruits, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = recruits - ci, ymax = recruits + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,50), breaks = seq(0,50,10)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Recruits (per m$^2$ of microhabitat)",
+       x = "Island",
+       title = "Mean Density of Surgeonfish Recruits")
+recruit_surg
+
+#Coral trout:
+recruit_trout <- ggplot(trout_r, aes(x=location, y=recruits, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = recruits - ci, ymax = recruits + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(-1.75,15), breaks = seq(0,15,5)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Recruits (per m$^2$ of microhabitat)",
+       x = "Island",
+       title = "Mean Density of Coral Trout Recruits")
+recruit_trout
+
+#Yellow damselfish:
+recruit_yellow <- ggplot(yellow_r, aes(x=location, y=recruits, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = recruits - ci, ymax = recruits + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,52), breaks = seq(0,50,10)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Recruits (per m$^2$ of microhabitat)",
+       x = "Island",
+       title = "Mean Density of Yellow Damselfish Recruits")
+recruit_yellow
+
+#Spotted damselfish:
+recruit_spot <- ggplot(spotted_r, aes(x=location, y=recruits, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = recruits - ci, ymax = recruits + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,25), breaks = seq(0,20,5)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = "Mean Density of Recruits (per m$^2$ of microhabitat)",
+       x = "Island",
+       title = "Mean Density of Spotted Damselfish Recruits")
+recruit_spot
+```
 
 
 ##Question 3

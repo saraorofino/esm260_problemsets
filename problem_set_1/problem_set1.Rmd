@@ -68,7 +68,7 @@ density_surg <- ggplot(surg, aes(x=location, y=density, fill = location)) +
   theme_bw() + 
   labs(y = expression(Mean~Density~of~Adults~(per~100~m^2)),
        x = "Island",
-       title = "Mean Density of Surgeonfish")
+       title = "Mean Density of Surgeonfish") 
 
 
 #Coral trout:
@@ -319,6 +319,8 @@ scatter_s <- ggplot(surg_calcs, aes(x = density, y = recruits_100)) +
   labs(x = expression(Density~of~Adults~(Number~per~100~m^2)), 
        y = expression(Density~of~Recruits~(Number~per~100~m^2)), 
        title = "Surgeonfish Adult vs. Recruitment Density") +
+  geom_text(aes(325,75, label=(paste(expression("R "^2*" = 0.9675")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -331,6 +333,8 @@ scatter_t <- ggplot(trout_calcs, aes(x = density, y = recruits_100)) +
   labs(x = expression(Density~of~Adults~(Number~per~100~m^2)), 
        y = expression(Density~of~Recruits~(Number~per~100~m^2)),
        title = "Coral Trout Adult vs. Recruitment Density") +
+  geom_text(aes(137,34, label=(paste(expression("R "^2*" = 0.8958")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -342,7 +346,9 @@ scatter_y <- ggplot(yellow_calcs, aes(x = density, y = recruits_100)) +
   scale_x_continuous(expand = c(0,0), limits = c(30,92), breaks = seq(30,90,10)) +
   labs(x = expression(Density~of~Adults~(Number~per~100~m^2)), 
        y = expression(Density~of~Recruits~(Number~per~100~m^2)), 
-       title = "Yellow Damselfish Adult vs. Recruitment Density") +
+       title = "Yellow Damselfish Adult vs. Recruitment Density") + 
+  geom_text(aes(84,710, label=(paste(expression("R "^2*" = 0.4017")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -354,7 +360,9 @@ scatter_sp <- ggplot(spotted_calcs, aes(x = density, y = recruits_100)) +
   scale_x_continuous(expand = c(0,0), limits = c(0,920), breaks = seq(0,900,100)) +
   labs(x = expression(Density~of~Adults~(Number~per~100~m^2)), 
        y = expression(Density~of~Recruits~(Number~per~100~m^2)),
-       title = "Spotted Damselfish Adult vs. Recruitment Density") +
+       title = "Spotted Damselfish Adult vs. Recruitment Density") + 
+  geom_text(aes(750,18, label=(paste(expression("R "^2*" = 0.9434")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 ```
@@ -400,7 +408,9 @@ scatter_s2 <- ggplot(surg_calcs, aes(x = micro_density, y = density)) +
   scale_x_continuous(expand = c(0,0), limits = c(0,4), breaks = seq(0,4,1)) + 
   labs(x = expression(Fine-branching~Coral~Density~(m^2/100~m^2)), 
        y = expression(Density~of~Adults~(Number~per~100~m^2)), 
-       title = "Microhabitat vs. Adult Surgeonfish Density") +
+       title = "Microhabitat vs. Adult Surgeonfish Density") + 
+  geom_text(aes(2.25,394, label=(paste(expression("R "^2*" = 0.9646")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -412,7 +422,9 @@ scatter_t2 <- ggplot(trout_calcs, aes(x = micro_density, y = density)) +
   scale_y_continuous(expand = c(0,0.5), limits = c(0,175), breaks = seq(0,150,50)) + 
   labs(x = expression(Coarse-branching~Coral~Density~(m^2/100~m^2)), 
        y = expression(Density~of~Adults~(Number~per~100~m^2)), 
-       title = "Microhabitat vs. Adult Coral Trout Density") +
+       title = "Microhabitat vs. Adult Coral Trout Density") + 
+  geom_text(aes(2.75,140, label=(paste(expression("R "^2*" = 0.7761")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -424,7 +436,9 @@ scatter_y2 <- ggplot(yellow_calcs, aes(x = micro_density, y = density)) +
   scale_y_continuous(expand = c(0,0), limits = c(30,95), breaks = seq(30,90,30)) +
   labs(x = expression(Mounding~Coral~Density~(m^2/100~m^2)), 
        y = expression(Density~of~Adults~(Number~per~100~m^2)),  
-       title = "Microhabitat vs. Adult Yellow Damselfish Density") +
+       title = "Microhabitat vs. Adult Yellow Damselfish Density") + 
+  geom_text(aes(14.75,85, label=(paste(expression("R "^2*" = 0.0001")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -436,7 +450,9 @@ scatter_sp2 <- ggplot(spotted_calcs, aes(x = micro_density, y = density)) +
   scale_y_continuous(expand = c(0,0), limits = c(0,950), breaks = seq(0,900,300)) +
   labs(x = expression(Sea~Anemone~Density~(m^2/100~m^2)), 
        y = expression(Density~of~Adults~(Number~per~100~m^2)), 
-       title = "Microhabitat vs. Adult Spotted Damselfish Density") +
+       title = "Microhabitat vs. Adult Spotted Damselfish Density") + 
+  geom_text(aes(1.5,850, label=(paste(expression("R "^2*" = 0.9482")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -611,6 +627,8 @@ scatter_st <- ggplot(surg, aes(x = density, y = density_t)) +
   labs(x = expression(Density~of~Adult~Surgeonfish~(Number~per~100~m^2)), 
        y = expression(Density~of~Adult~Coral~Trout~(Number~per~100~m^2)), 
        title = "Adult Surgeonfish vs. Adult Coral Trout Density") +
+  geom_text(aes(350,130, label=(paste(expression("R "^2*" = 0.3276")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -622,7 +640,9 @@ scatter_sy <- ggplot(surg, aes(x = density, y = density_y)) +
   scale_x_continuous(expand = c(0,0), limits = c(0,400), breaks = seq(0,400,100)) + 
   labs(x = expression(Density~of~Adult~Surgeonfish~(Number~per~100~m^2)), 
        y = expression(Density~of~Adult~Yellow~Damselfish~(Number~per~100~m^2)), 
-       title = "Adult Surgeonfish vs. Adult Yellow Damselfish Density") +
+       title = "Adult Surgeonfish vs. Adult Yellow Damselfish Density") + 
+  geom_text(aes(75,83, label=(paste(expression("R "^2*" = 0.2016")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -634,7 +654,9 @@ scatter_ssp <- ggplot(surg, aes(x = density, y = density_sp)) +
   scale_x_continuous(expand = c(0,0), limits = c(0,400), breaks = seq(0,400,100)) + 
   labs(x = expression(Density~of~Adult~Surgeonfish~(Number~per~100~m^2)), 
        y = expression(Density~of~Adult~Spotted~Damselfish~(Number~per~100~m^2)), 
-       title = "Adult Surgeonfish vs. Adult Spotted Damselfish Density") +
+       title = "Adult Surgeonfish vs. Adult Spotted Damselfish Density") + 
+  geom_text(aes(350,670, label=(paste(expression("R "^2*" = 0.4106")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -647,7 +669,9 @@ scatter_ty <- ggplot(trout, aes(x = density, y = density_y)) +
   scale_x_continuous(expand = c(0,0), limits = c(0,200), breaks = seq(0,200,50)) + 
   labs(x = expression(Density~of~Adult~Coral~Trout~(Number~per~100~m^2)), 
        y = expression(Density~of~Adult~Yellow~Damselfish~(Number~per~100~m^2)), 
-       title = "Adult Coral Trout vs. Adult Yellow Damselfish Density") +
+       title = "Adult Coral Trout vs. Adult Yellow Damselfish Density") + 
+  geom_text(aes(23,90, label=(paste(expression("R "^2*" = 0.8915")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -659,7 +683,9 @@ scatter_tsp <- ggplot(trout, aes(x = density, y = density_sp)) +
   scale_x_continuous(expand = c(0,0), limits = c(0,200), breaks = seq(0,200,50)) + 
   labs(x = expression(Density~of~Adult~Coral~Trout~(Number~per~100~m^2)), 
        y = expression(Density~of~Adult~Spotted~Damselfish~(Number~per~100~m^2)), 
-       title = "Adult Coral Trout vs. Adult Spotted Damselfish Density") +
+       title = "Adult Coral Trout vs. Adult Spotted Damselfish Density") + 
+  geom_text(aes(150,850, label=(paste(expression("R "^2*" = 0.9704")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 
@@ -673,6 +699,8 @@ scatter_ysp <- ggplot(yellow, aes(x = density, y = density_sp)) +
   labs(x = expression(Density~of~Adult~Yellow~Damselfish~(Number~per~100~m^2)), 
        y = expression(Density~of~Adult~Spotted~Damselfish~(Number~per~100~m^2)), 
        title = "Adult Yellow Damselfish vs. Adult Spotted Damselfish Density") +
+  geom_text(aes(37.5,760, label=(paste(expression("R "^2*" = 0.7656")))),parse = TRUE,
+            color = "black", size = 3) +
   theme_bw()
 
 ```

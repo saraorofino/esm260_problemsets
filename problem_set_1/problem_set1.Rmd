@@ -53,10 +53,28 @@ yellow <- density %>%
 
 spotted <- density %>%
   filter(organism == "spotted damsel")
+
+mounding <- density %>%
+  filter(organism == "mounding corals")
+
+coarse <- density %>%
+  filter(organism == "coarse-branching corals")
+
+fine <- density %>% 
+  filter(organism == "fine-branching corals")
+
+anemone <- density %>% 
+  filter(organism == "sea anemones")
+
+algae <- density %>% 
+  filter(organism == "algae")
 ```
 
 
 ```{r density-graphs, include=FALSE}
+
+###Fish:
+
 #surgeonfish:
 density_surg <- ggplot(surg, aes(x=location, y=density, fill = location)) + 
   geom_col(width = 0.95, alpha = 0.7) + 
@@ -69,7 +87,6 @@ density_surg <- ggplot(surg, aes(x=location, y=density, fill = location)) +
   labs(y = expression(Mean~Density~of~Adults~(per~100~m^2)),
        x = "Island",
        title = "Mean Density of Surgeonfish") 
-
 
 #Coral trout:
 density_trout <- ggplot(trout, aes(x=location, y=density, fill = location)) + 
@@ -97,7 +114,6 @@ density_yellow <- ggplot(yellow, aes(x=location, y=density, fill = location)) +
        x = "Island",
        title = "Mean Density of Yellow Damselfish")
 
-
 #Spotted damselfish:
 density_spot <- ggplot(spotted, aes(x=location, y=density, fill = location)) + 
   geom_col(width = 0.95, alpha = 0.7) + 
@@ -111,7 +127,76 @@ density_spot <- ggplot(spotted, aes(x=location, y=density, fill = location)) +
        x = "Island",
        title = "Mean Density of Spotted Damselfish")
 
+
+#### Other organisms:
+#Mounding coral:
+density_mound <- ggplot(mounding, aes(x=location, y=density, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,25), breaks = seq(0,25,5)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = expression(Mean~Density~of~Adults~(per~100~m^2)),
+       x = "Island",
+       title = "Mean Density of Mounding Corals")
+
+#Coarse-branching coral:
+density_coarse <- ggplot(coarse, aes(x=location, y=density, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,4), breaks = seq(0,4,1)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = expression(Mean~Density~of~Adults~(per~100~m^2)),
+       x = "Island",
+       title = "Mean Density of Coarse-branching Corals")
+
+#Fine-branching coral:
+density_fine <- ggplot(fine, aes(x=location, y=density, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(-0.7,4.2), breaks = seq(0,4,1)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = expression(Mean~Density~of~Adults~(per~100~m^2)),
+       x = "Island",
+       title = "Mean Density of Fine-branching Corals")
+
+#Sea anemones:
+density_anemone <- ggplot(anemone, aes(x=location, y=density, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,2), breaks = seq(0,2,0.5)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = expression(Mean~Density~of~Adults~(per~100~m^2)),
+       x = "Island",
+       title = "Mean Density of Sea Anemones")
+
+#Algae:
+density_algae <- ggplot(algae, aes(x=location, y=density, fill = location)) + 
+  geom_col(width = 0.95, alpha = 0.7) + 
+  geom_errorbar(aes(ymin = density - ci, ymax = density + ci), width = 0.5) +
+  facet_wrap(~year) + 
+  scale_y_continuous(expand = c(0,0), limits = c(-0.5,6.5), breaks = seq(0,6,2)) + 
+  scale_x_discrete(expand = c(0,0)) + 
+  scale_fill_manual(name = "Island", breaks = c("Aitutaki", "Rarotonga"), values = c("dodgerblue", "darkslategray3")) +
+  theme_bw() + 
+  labs(y = expression(Mean~Density~of~Adults~(per~100~m^2)),
+       x = "Island",
+       title = "Mean Density of Algae")
+
 ```
+
+
 ```{r, warning=F, message=F, echo=F}
 density_surg
 ```
@@ -129,11 +214,43 @@ density_yellow
 ```
 
 \newpage
+
 ```{r warning=F, message=F, echo=F}
 density_spot
 ```
 
+\vspace{18pt}
+
+```{r warning=F, message=F, echo=F}
+density_mound
+```
+
 \newpage
+
+```{r warning=F, message=F, echo=F}
+density_coarse
+```
+
+\vspace{18pt}
+
+```{r warning=F, message=F, echo=F}
+density_fine
+```
+
+\newpage
+
+```{r warning=F, message=F, echo=F}
+density_anemone
+```
+
+\vspace{18pt}
+
+```{r warning=F, message=F, echo=F}
+density_algae
+```
+
+\newpage
+
 #Question 2
 ##Change in Density of Recruits 
 

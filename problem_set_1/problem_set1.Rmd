@@ -1,6 +1,6 @@
 ---
 documentclass: article
-fontsize: 12pt 
+fontsize: 12pt
 header-includes:
 - \usepackage{crimson}
 - \usepackage[T1]{fontenc}
@@ -10,6 +10,7 @@ header-includes:
 - \usepackage{enumitem}
 - \usepackage{changepage}
 output:
+  word_document: default
   pdf_document: default
   html_document: default
 ---

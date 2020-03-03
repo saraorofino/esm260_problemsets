@@ -30,8 +30,8 @@ library(tidyverse)
 library(here)
 
 #Data:
-density <- read_csv(file=file.path(here(),"density.csv"))
-recruits <- read_csv(file=file.path(here(),"recruits.csv"))
+density <- read_csv(file=file.path(here(),"/data/sets_1_3/density.csv"))
+recruits <- read_csv(file=file.path(here(),"/data/sets_1_3/recruits.csv"))
 ```
 
 #Question 1

@@ -1,0 +1,21 @@
+﻿species,density,development,range,trophic
+A,9,non-planktonic,Cosmopolitan,predator
+B,-1,planktonic,Northern,filter feeder
+C,17,planktonic,Southern,scavenger
+D,36,planktonic,Cosmopolitan,filter feeder
+E,-19,non-planktonic,Cosmopolitan,filter feeder
+F,-91,planktonic,Northern,predator
+G,-76,planktonic,Northern,filter feeder
+H,101,non-planktonic,Southern,filter feeder
+I,36,non-planktonic,Cosmopolitan,scavenger
+J,-85,non-planktonic,Northern,filter feeder
+K,100,planktonic,Southern,predator
+L,69,planktonic,Southern,scavenger
+M,-26,non-planktonic,Cosmopolitan,filter feeder
+N,44,non-planktonic,Southern,scavenger
+O,33,non-planktonic,Cosmopolitan,predator
+P,91,planktonic,Southern,filter feeder
+Q,-29,non-planktonic,Cosmopolitan,scavenger
+R,-85,non-planktonic,Northern,predator
+S,-59,planktonic,Northern,predator
+T,26,planktonic,Cosmopolitan,scavenger

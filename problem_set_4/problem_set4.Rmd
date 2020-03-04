@@ -1,0 +1,77 @@
+---
+title: "problem_set_4"
+author: "Sara Orofino"
+date: "3/3/2020"
+output: pdf_document
+---
+
+```{r read-data, include=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(here)
+
+climate <- read_csv(file=file.path(here(), "/data/sets_4_5/climate.csv"))
+
+
+```
+
+#Question 1
+
+##Effects of climate change on marine ecosystems
+
+**Goal:**Provide evidence for changes in marine communities that may be due to climatic changes, such as increases in temperature.  
+
+Start by looking at the following information for all species:
+ * The mode of development (i.e., planktonic larvae vs. non-planktonic larvae)   
+ * The geographic range (i.e., does the species range occur primarily North or South of the site, or is it Cosmopolitan - both north
+and south)  
+* The trophic level (i.e., predator, filter feeder, scavenger)   
+
+Questions to consider:  
+ * What are the patterns of change?  
+ * Try grouping the species by categories and see if anything emerges.  
+
+Visualizing the data by looking at the change in density as a function of the mode of development:   
+```{r climate-mode, echo=FALSE}
+
+mode <- ggplot(climate, aes(x=species, y=density, fill = development)) + 
+  geom_col() + 
+  scale_fill_manual(breaks = c("non-planktonic", "planktonic"), values = c("turquoise3", "navyblue"),
+                     labels = c("Non-planktonic", "Planktonic"), name = "") + 
+  labs(x = "Species", y = "Change in Density", title = "Change in Density by Mode of Development") +
+  theme_bw()
+mode
+```
+ From this graph we can see that negative and positive density changes are not necessarily dependent on development type. Some planktonic modes of development are increasing density while otheers are decreasing density. The same is also true for non-planktonic modes of development.  
+ 
+Density changes by geographic location:  
+```{r climate-geography, echo=FALSE}
+geography <- ggplot(climate, aes(x=species, y=density, fill = range)) + 
+  geom_col() + 
+  scale_fill_manual(values = c("slategrey", "navyblue", "turquoise3"),
+                    name = "") + 
+  labs(x = "Species", y = "Change in Density", title = "Change in Density by Geographic Location") +
+  theme_bw()
+geography
+```
+From this graph we can see that species located in the north tend to have declining densities (negative change), while those species in the south are seeing positive density change. Cosmopolitan areas are having mostly positive density changes, although this is not the case across the board.  
+
+Density changes by tropic level:  
+```{r climate-trophic, echo=FALSE}
+trophic <- ggplot(climate, aes(x=species, y=density, fill = trophic)) + 
+  geom_col() + 
+  scale_fill_manual(values = c("seagreen4", "navyblue", "turquoise3"),
+                    labels = c("Filter Feeder", "Predator", "Scavenger"),
+                    name = "") + 
+  labs(x = "Species", y = "Change in Density", title = "Change in Density by Trophic Level") +
+  theme_bw()
+trophic
+```
+From this graph there doesn't appear to be a relationship between the change in density and the trophic level. At all three trophic levels there are some species which are increasing in density and some that are decreasing in density.  
+
+#Question 2 
+
+##Effects of a nuclear power plant
+
+#Question 3
+
+##Managing a new fishery to halt invasive species

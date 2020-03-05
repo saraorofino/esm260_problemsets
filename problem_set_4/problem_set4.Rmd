@@ -10,7 +10,9 @@ library(tidyverse)
 library(here)
 
 climate <- read_csv(file=file.path(here(), "/data/sets_4_5/climate.csv"))
-
+nuclear <- read_csv(file=file.path(here(), "/data/sets_4_5/nuclear.csv"))
+crab <- read_csv(file=file.path(here(), "/data/sets_4_5/crab.csv"))
+upwell <- read_csv(file=file.path(here(), "/data/sets_4_5/upwell.csv"))
 
 ```
 
@@ -68,10 +70,299 @@ trophic
 ```
 From this graph there doesn't appear to be a relationship between the change in density and the trophic level. At all three trophic levels there are some species which are increasing in density and some that are decreasing in density.  
 
+Linear Regression:
+```{r climate-regression}
+geog_model <- lm(formula = density ~ range + development + trophic, data=climate)
+summary(geog_model)
+```
+
+
 #Question 2 
 
 ##Effects of a nuclear power plant
 
+**Goal:**Determine if there are any detectable impacts of th eplants on the three invertebrate species.  
+
+Sites:  
+ * Discharge point (10 years before and 10 years after)  
+ * Hyperion Bay (10 years before and 10 years after)  
+ * Noway Bay (10 years before and 10 years after)  
+
+Start by visualizing the pattern in the three sites together:  
+```{r nuclear-plot1, echo=FALSE}
+nuc_point <- ggplot(nuclear, aes(x=year, y=density)) + 
+  geom_point(aes(color = species)) + 
+  facet_wrap(~location)
+nuc_point
+
+nuc_line <- ggplot(nuclear, aes(x=year, y=density)) + 
+  geom_line(aes(color = species)) + 
+  facet_wrap(~location)
+nuc_line
+```
+ Diablo: Species A remains similar (increases a little maybe), Species B declines, Species C increases  
+ Hyperion: Species A remains similar, Species B declines, Species C increases  
+ Noway: Species A similar (maybe decreases a little), Species B declines, Species C increases  
+ 
+ Line Charts by Species:  
+ 
+ **Species A**  
+```{r spp-a, echo=FALSE}
+spp_a <- nuclear %>% 
+  filter(species == "A")
+
+spp_a_graph <- ggplot(spp_a, aes(x = year, y=density, color=location)) + 
+  geom_line(alpha = 0.7) + 
+  geom_vline(xintercept = 2010) + 
+  geom_smooth(method = "lm", formula = y ~ x, aes(color = location), se = FALSE, size = 0.8) +
+  scale_color_manual(values = c("darkgreen", "darkgoldenrod", "indianred4"),
+                     labels = c("Diablo", "Hyperion", "Noway"),
+                     name = "Monitoring Site") + 
+  scale_y_continuous(limits = c(0,30), breaks = seq(0,30,10)) +
+  scale_x_continuous(limits =c(2000,2020), breaks = seq(2000,2020,5), expand = c(0,0)) + 
+  labs(x = "Year", y = "Change in Density",
+       title = "Change in Density Over Time",
+       subtitle = "Species A") + 
+  theme_bw()
+spp_a_graph
+```
+Species A remains relatively constant at all the sites   
+ 
+**Species B**  
+```{r spp-b, echo=FALSE}
+spp_b <- nuclear %>% 
+  filter(species == "B")
+
+spp_b_graph <- ggplot(spp_b, aes(x = year, y=density, color=location)) + 
+  geom_line(alpha = 0.7) + 
+  geom_vline(xintercept = 2010) + 
+  geom_smooth(method = "lm", formula = y ~ x, aes(color = location), se = FALSE, size = 0.8) + 
+  scale_color_manual(values = c("darkgreen", "darkgoldenrod", "indianred4"),
+                     labels = c("Diablo", "Hyperion", "Noway"),
+                     name = "Monitoring Site") + 
+  scale_y_continuous(limits = c(0,30), breaks = seq(0,30,10)) +
+  scale_x_continuous(limits =c(2000,2020), breaks = seq(2000,2020,5), expand = c(0,0)) + 
+  labs(x = "Year", y = "Change in Density",
+       title = "Change in Density Over Time",
+       subtitle = "Species B") + 
+  theme_bw()
+spp_b_graph
+```
+Species B decreases at all thre sites relative to the pre-power plant monitoring  
+
+**Species C**  
+```{r spp-c, echo=FALSE}
+spp_c <- nuclear %>% 
+  filter(species == "C")
+
+spp_c_graph <- ggplot(spp_c, aes(x = year, y=density, color=location)) + 
+  geom_line(alpha = 0.7) + 
+  geom_vline(xintercept = 2010) + 
+  geom_smooth(method = "lm", formula = y ~ x, aes(color = location), se = FALSE, size = 0.8) +
+  scale_color_manual(values = c("darkgreen", "darkgoldenrod", "indianred4"),
+                     labels = c("Diablo", "Hyperion", "Noway"),
+                     name = "Monitoring Site") + 
+  scale_y_continuous(limits = c(0,30), breaks = seq(0,30,10)) +
+  scale_x_continuous(limits =c(2000,2020), breaks = seq(2000,2020,5), expand = c(0,0)) + 
+  labs(x = "Year", y = "Change in Density",
+       title = "Change in Density Over Time",
+       subtitle = "Species C") + 
+  theme_bw()
+spp_c_graph
+```
+Species C increases at all three sites relative to pre-power plant monitoring   
+
 #Question 3
 
 ##Managing a new fishery to halt invasive species
+
+Main issues with previous approaches to manage crab fishery:  
+
+Limitations of prior attempts to predict recruitment solely on the basis of the # of adults are:  
+ * The predictions ignore the fact that the species have open populations (i.e., they have large scale larval
+dispersal so that recruits may come from somewhere else)  
+ * The predictions ignore environmental variation affecting adults (e.g., food supply, predators)  
+ * The predictions ignore environmental variation affecting the success of larvae during their development (e.g., food supply, temperature, and predator abundances)  
+
+*Key Points*  
+ * This time of year currents run north to south along the shore  
+ * crab larvae live about 3 weeks before settling but barnacle larvae live only 10 days  
+ * both species spawn in the spring  
+ * barnacles are scavengers and filter phytoplankton from the water column; crabs are scavengers and eat detritus from seafloor  
+ 
+*Upwelling*  
+Large positive values imply strong upwelling (and abundant nutrients and phytoplankton). Negative values imply downwelling (and low nutrients and rare phytoplankton). You obtain values for the summer, when juveniles are developing and for the winter, when adults are producing new eggs. Remember, values affecting adults are for different years than values affecting larvae.  
+
+*Steps*  
+Try plotting the recruitment data against the other variables that might be able to explain them. Use a scatterplot. Look for patterns (e.g., straight lines or smooth curves) that imply there is a relationship between the variable and the pattern of recruitment.  
+
+
+Start with scatterplots to start seeing relationships:  
+```{r crab-plots, echo = FALSE}
+#adult vs. crab recruitment CA
+crab_1 <- ggplot(crab, aes(x = crab_ca_rec, y = crab_ca_ad)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size = 0.5) + 
+  theme_light()
+crab_1
+#no pattern
+
+#adult vs. crab recruitment OR:
+crab_2 <- ggplot(crab, aes(x = crab_or_rec, y = crab_or_ad)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size = 0.5) + 
+  theme_light()
+crab_2
+#no pattern
+
+#adult ca vs. recruit or crab
+crab_3 <- ggplot(crab, aes(x = crab_or_rec, y = crab_ca_ad)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) +
+  theme_light()
+crab_3
+#no pattern
+
+#oregon adult vs. california rec.
+crab_4 <- ggplot(crab, aes(x = crab_or_ad, y = crab_ca_rec)) +
+  geom_point() +
+  theme_light()
+crab_4
+#Interesting bell curve
+```
+
+Crab densities and upwelling:  
+```{r crab-upwelling, echo=FALSE}
+#Adults vs. summer upwelling in CA and OR  
+summer_ca <- ggplot(crab, aes(x = crab_ca_ad, y = summer_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+summer_ca
+
+summer_or <- ggplot(crab, aes(x = crab_or_ad, y = summer_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+summer_or
+#Decent relationships
+
+#Recruits vs. summer upwelling in CA and OR
+summer_ca_rec <- ggplot(crab, aes(x = crab_ca_rec, y = summer_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+summer_ca_rec
+
+summer_or_rec <- ggplot(crab, aes(x = crab_or_rec, y = summer_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+summer_or_rec
+
+#Neither have much of a relationship
+
+#Adults vs. winter upwelling in CA and OR
+winter_ca <- ggplot(crab, aes(x = crab_ca_ad, y = winter_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+winter_ca
+#negative but not too strong
+
+winter_or <- ggplot(crab, aes(x = crab_or_ad, y = winter_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+winter_or
+#not too strong
+
+#Recruits vs. winter upwelling in CA and OR
+winter_ca_rec <- ggplot(crab, aes(x = crab_ca_rec, y = winter_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+winter_ca_rec
+#not much of a relationship
+
+winter_or_rec <- ggplot(crab, aes(x = crab_or_rec, y = winter_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+winter_or_rec
+#also not much of a relationship
+```
+
+Barnacle densities and upwelling: 
+```{r barnacle-upwelling, echo=FALSE}
+#Adults vs. summer upwelling in CA and OR  
+b_summer_ca <- ggplot(crab, aes(x = barnacle_ca_ad, y = summer_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_summer_ca
+#not great
+
+b_summer_or <- ggplot(crab, aes(x = barnacle_or_ad, y = summer_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_summer_or
+#not great either
+
+#Recruits vs. summer upwelling in CA and OR
+b_summer_ca_rec <- ggplot(crab, aes(x = barnacle_ca_rec, y = summer_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_summer_ca_rec
+#ehh
+
+b_summer_or_rec <- ggplot(crab, aes(x = barnacle_or_rec, y = summer_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_summer_or_rec
+#This one is strong
+
+#Adults vs. winter upwelling in CA and OR
+b_winter_ca <- ggplot(crab, aes(x = barnacle_ca_ad, y = winter_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_winter_ca
+#decently strong
+
+b_winter_or <- ggplot(crab, aes(x = barnacle_or_ad, y = winter_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_winter_or
+#not too strong
+
+#Recruits vs. winter upwelling in CA and OR
+b_winter_ca_rec <- ggplot(crab, aes(x = barnacle_ca_rec, y = winter_ca)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_winter_ca_rec
+#not much of a relationship
+
+b_winter_or_rec <- ggplot(crab, aes(x = barnacle_or_rec, y = winter_or)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  theme_bw()
+b_winter_or_rec
+#also not much of a relationship
+```
+
+The three relationships that seem decently strong are:  
+ * OR adult crab density vs. CA recruit crab density  
+ * CA adult crab densities vs. ca summer upwelling   
+ * OR adult crab densities vs. or summer upwelling  
+ * OR barnacle recruits vs. summer upwelling  
+ * CA adult barnacles vs. winter upwelling  
+ 
+ 
+
+

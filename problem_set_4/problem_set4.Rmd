@@ -82,7 +82,7 @@ summary(geog_model)
 
 ##Effects of a nuclear power plant
 
-**Goal:**Determine if there are any detectable impacts of th eplants on the three invertebrate species.  
+**Goal:**Determine if there are any detectable impacts of the plants on the three invertebrate species.  
 
 Sites:  
  * Discharge point (10 years before and 10 years after)  
@@ -199,27 +199,26 @@ Large positive values imply strong upwelling (and abundant nutrients and phytopl
 Try plotting the recruitment data against the other variables that might be able to explain them. Use a scatterplot. Look for patterns (e.g., straight lines or smooth curves) that imply there is a relationship between the variable and the pattern of recruitment.  
 
 
-Start with scatterplots to start seeing relationships:  
+Start with scatterplots to start seeing relationships in adult vs. recruits for crabs: 
 ```{r crab-plots, echo = FALSE}
 #adult vs. crab recruitment CA
-crab_1 <- ggplot(crab1, aes(x = crab_ca_ad, y = crab_ca_rec)) +
-  geom_point() +
-  geom_smooth(method = "lm", formula = y~x, se=FALSE, size = 0.5) + 
-  theme_light()
+crab_1 <- ggplot(crab2, aes(x = crab_ca_ad, y = crab_ca_rec)) +
+  geom_point(aes(color = year)) +
+  theme_bw()
 crab_1
-#no pattern
+
 
 #adult vs. crab recruitment OR:
-crab_2 <- ggplot(crab1, aes(x = crab_or_ad, y = crab_or_rec)) +
-  geom_point() +
+crab_2 <- ggplot(crab2, aes(x = crab_or_ad, y = crab_or_rec)) +
+  geom_point(aes(color = year)) +
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size = 0.5) + 
-  theme_light()
+  theme_bw()
 crab_2
 #no pattern
 
 #adult ca vs. recruit or crab
-crab_3 <- ggplot(crab1, aes(x = crab_ca_ad, y = crab_or_rec)) +
-  geom_point() +
+crab_3 <- ggplot(crab2, aes(x = crab_ca_ad, y = crab_or_rec)) +
+  geom_point(aes(color = as.factor(year))) +
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) +
   theme_light()
 crab_3
@@ -227,10 +226,18 @@ crab_3
 
 #oregon adult vs. california rec.
 crab_4 <- ggplot(crab1, aes(x = crab_or_ad, y = crab_ca_rec)) +
-  geom_point() +
+  geom_point(aes(color = as.factor(year))) +
+  scale_x_continuous(limits = c(0,50)) + 
+  scale_y_continuous(limits = c(0,50)) +
   theme_light()
 crab_4
-#Interesting bell curve
+
+#Adult crab vs. adult barnacle in CA and OR:
+crab_5 <- ggplot(crab1, aes(x = crab_ca_ad, y = barnacle_ca_ad)) +
+  geom_point(aes(color = as.factor(year))) +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) +
+  theme_light()
+crab_5
 ```
 
 Crab densities and upwelling:  
@@ -323,6 +330,46 @@ winter_or_rec2
 #not much of a relationship
 ```
 
+Barnacle adult vs. recruit densities:
+```{r barnacle-plots}
+#adult vs. barnacle recruitment CA
+b_1 <- ggplot(crab2, aes(x = barnacle_ca_ad, y = barnacle_ca_rec)) +
+  geom_point(aes(color = year)) +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size = 0.5) +
+  scale_x_continuous(limits = c(0,50)) + 
+  scale_y_continuous(limits = c(0,50)) +
+  theme_bw()
+b_1
+
+
+#adult vs. barnacle recruitment OR:
+b_2 <- ggplot(crab2, aes(x = barnacle_or_ad, y = barnacle_or_rec)) +
+  geom_point(aes(color = year)) +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size = 0.5) + 
+  theme_bw()
+b_2
+#no pattern
+
+#adult ca vs. recruit or barnacle
+b_3 <- ggplot(crab2, aes(x = barnacle_ca_ad, y = barnacle_or_rec)) +
+  geom_point(aes(color = year)) +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) +
+  theme_light()
+b_3
+#no pattern
+
+#oregon adult vs. california rec.
+b_4 <- ggplot(crab2, aes(x = barnacle_or_ad, y = barnacle_ca_rec)) +
+  geom_point(aes(color=year)) +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) +
+  scale_x_continuous(limits = c(0,50)) + 
+  scale_y_continuous(limits = c(0,50)) +
+  theme_light()
+b_4
+```
+
+
+
 Barnacle densities and upwelling: 
 ```{r barnacle-upwelling, echo=FALSE}
 #Adults vs. summer upwelling in CA and OR  
@@ -401,35 +448,40 @@ b_winter_or_rec
 #also not much of a relationship
 
 #Recruits (2001) vs. winter upwelling in CA and OR (2001)
-b_winter_ca_rec2 <- ggplot(crab2, aes(x = barnacle_ca_rec, y = winter_ca)) + 
-  geom_point() + 
+b_winter_ca_rec2 <- ggplot(crab2, aes(x = winter_ca, y = barnacle_ca_rec)) + 
+  geom_point(aes(color = as.factor(year))) + 
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
   theme_bw()
 b_winter_ca_rec2
 #very strong
 
-b_winter_or_rec2 <- ggplot(crab2, aes(x = barnacle_or_rec, y = winter_or)) + 
+b_winter_or_rec2 <- ggplot(crab2, aes(x = winter_or, y = barnacle_or_rec)) + 
   geom_point() + 
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
   theme_bw()
 b_winter_or_rec2
 #not much of a relationship
+
+#Recruits might be coming from OR to CA with currents so maybe 
 ```
 
 The three relationships that seem decently strong are:  
- * OR adult crab density vs. CA recruit crab density  
- * CA adult crab densities vs. ca summer upwelling   
- * OR adult crab densities vs. or summer upwelling
- * CA crab recruits vs. winter upwelling
- * OR barnacle recruits vs. summer upwelling  
- * CA adult barnacles vs. winter upwelling  
- * CA barnacle recruits (2001) vs. winter upwelling (2001)
+ * CA barnacle adult densities (year x) vs. ca recruit densities (year x+1)  
+ * CA adult crab densities vs. ca summer upwelling (same year)     
+ * OR adult crab densities vs. or summer upwelling (same year)  
+ * OR barnacle recruits vs. summer upwelling  (same year)  
+ * CA adult barnacles vs. winter upwelling  (same year)  
+ * CA barnacle recruits (year x+1) vs. winter upwelling (year x)
  
 Try a regression for these relationships to see if they are significant:  
 ```{r}
-#adult crab density vs ca recruits
-or_ca_ad <- lm(formula = crab_ca_rec ~ crab_or_ad, data = crab1)
-summary(or_ca_ad) #not a significant relationship
+#ca crab adult vs. barnacle adult density:
+crab_b_ad <- lm(formula = crab_ca_ad ~ barnacle_ca_ad, data = crab1)
+summary(crab_b_ad) #significant 0.003
+
+#adult barnacle density vs recruits
+ca_b_ad <- lm(formula = barnacle_ca_rec ~ barnacle_ca_ad, data = crab1)
+summary(ca_b_ad) #significant at 0.002
 
 #ca adults vs. summer upwelling (same year)
 ca_ad_up <- lm(formula = crab_ca_ad ~ summer_ca, data=crab1)
@@ -439,10 +491,6 @@ summary(ca_ad_up) #significant at 0.06
 or_ad_up <- lm(formula = crab_or_ad ~ summer_or, data=crab1)
 summary(or_ad_up) #significant at 0.009
 
-#ca recruits (year x) vs. winter upwelling (year x)
-ca_rec_up <- lm(formula = crab_ca_rec ~ winter_ca, data=crab2)
-summary(ca_rec_up) #significant at 0.031
-
 #or barnacle recruits (year x+1) vs. summer upwelling (year x)
 or_b_rec_up <- lm(formula = barnacle_or_rec ~ summer_or, data=crab1)
 summary(or_b_rec_up) #highly significant < 0.0001
@@ -451,15 +499,27 @@ summary(or_b_rec_up) #highly significant < 0.0001
 ca_b_ad_up <- lm(formula = barnacle_ca_ad ~ winter_ca, data=crab1)
 summary(ca_b_ad_up) #also very significant 0.0006
 
-#ca recruits (year x) vs. winter upwelling (year x)
-ca_b_rec_up <- lm(formula = barnacle_ca_rec ~ winter_ca, data=crab2)
-summary(ca_b_rec_up) #very significant < 0.0001
+#ca recruits (year x+1) vs. winter upwelling (year x)
+ca_b_rec_up <- lm(formula = barnacle_ca_rec ~ winter_ca, data=crab1)
+summary(ca_b_rec_up) #significant 0.072
 
 ```
 
 
 Plots for paper to make look nicer:
 ```{r final-plots}
+#Barnacle densities (adult vs. recruit) in CA:
+b_1 <- ggplot(crab1, aes(x = barnacle_ca_ad, y = barnacle_ca_rec)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size = 0.5) +
+  labs(x = "Adult Barnacle Density (Year X)",
+       y = "Barnacle Recruit Density (Year X+1)",
+       title = "California Barnacle Adult vs. Recruit Densities") +
+  scale_x_continuous(limits = c(25,45)) + 
+  scale_y_continuous(limits = c(0,20)) +
+  theme_bw()
+b_1
+
 # ca adults vs summer upwelling
 summer_ca <- ggplot(crab1, aes(x = summer_ca, y = crab_ca_ad)) + 
   geom_point() + 
@@ -468,6 +528,7 @@ summer_ca <- ggplot(crab1, aes(x = summer_ca, y = crab_ca_ad)) +
        y = "Adult Crab Densities",
        title = "California Adult Crab Densities vs. Summer Upwelling Index") +
   scale_x_continuous(expand = c(0.05,0.05)) + 
+  scale_y_continuous(limits = c(0,50), breaks = seq(0,50,10)) +
   theme_bw()
 summer_ca
 
@@ -475,6 +536,11 @@ summer_ca
 summer_or <- ggplot(crab1, aes(x = summer_or, y = crab_or_ad)) + 
   geom_point() + 
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  labs(x = "Summer Upwelling Index",
+       y = "Adult Crab Densities",
+       title = "Oregon Adult Crab Densities vs. Summer Upwelling Index") +
+  scale_x_continuous(expand = c(0.05,0.05)) + 
+  scale_y_continuous(limits = c(0,50), breaks = seq(0,50,10)) +
   theme_bw()
 summer_or
 
@@ -488,13 +554,23 @@ crab_4
 b_winter_ca <- ggplot(crab1, aes(x = winter_ca, y = barnacle_ca_ad)) + 
   geom_point() + 
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  labs(x = "Winter Upwelling Index",
+       y = "Adult Barnacle Densities",
+       title = "California Adult Barnacle Densities vs. Winter Upwelling Index") +
+  scale_x_continuous(expand = c(0.05,0.05)) +  
+  scale_y_continuous(limits = c(0,50), breaks = seq(0,50,10)) +
   theme_bw()
 b_winter_ca
 
-#CA crab recruits (year x) vs. winter upwelling in CA (year x):
-winter_ca_rec2 <- ggplot(crab2, aes(x = winter_ca, y = crab_ca_rec)) + 
+#CA crab recruits (year x+1) vs. winter upwelling in CA (year x):
+winter_ca_rec2 <- ggplot(crab1, aes(x = winter_ca, y = crab_ca_rec)) + 
   geom_point() + 
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  labs(x = "Winter Upwelling Index (Year X)",
+       y = "Crab Recruit Densities (Year X)",
+       title = "California Crab Recruit Densities vs. Winter Upwelling Index") +
+  scale_x_continuous(expand = c(0.05,0.05)) + 
+  scale_y_continuous(limits = c(0,50), breaks = seq(0,50,10)) +
   theme_bw()
 winter_ca_rec2
 
@@ -502,15 +578,36 @@ winter_ca_rec2
 b_summer_or_rec <- ggplot(crab1, aes(x = summer_or, y = barnacle_or_rec)) + 
   geom_point() + 
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  labs(x = "Summer Upwelling Index (Year X)",
+       y = "Barnacle Recruit Densities (Year X+1)",
+       title = "Oregon Barnacle Recruit Densities vs. Summer Upwelling Index") +
+  scale_x_continuous(expand = c(0.05,0.05)) + 
+  scale_y_continuous(limits = c(0,50), breaks = seq(0,50,10)) +
   theme_bw()
 b_summer_or_rec
 
-#CA barnacle recruits (year x) vs. winter upwelling in CA (year x)
-b_winter_ca_rec2 <- ggplot(crab2, aes(x = winter_ca, y = barnacle_ca_rec)) + 
+#CA barnacle recruits (year x+1) vs. winter upwelling in CA (year x)
+b_winter_ca_rec2 <- ggplot(crab1, aes(x = winter_ca, y = barnacle_ca_rec)) + 
   geom_point() + 
   geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) + 
+  labs(x = "Winter Upwelling Index (Year X)",
+       y = "Barnacle Recruit Densities (Year X+1)",
+       title = "California Barnacle Recruit Densities vs. Winter Upwelling Index") +
+  scale_x_continuous(expand = c(0.05,0.05)) + 
+  scale_y_continuous(limits = c(0,50), breaks = seq(0,50,10)) +
   theme_bw()
 b_winter_ca_rec2
 
+#Adult crabs vs. adult barnacles in CA (same year)
+crab_5 <- ggplot(crab1, aes(x = crab_ca_ad, y = barnacle_ca_ad)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y~x, se=FALSE, size=0.5) +
+  labs(x = "Crab Adult Density",
+       y = "Barnacle Adult Density",
+       title = "California Barnacle and Crab Adult Densities") +
+  scale_x_continuous(expand = c(0.05,0.05)) + 
+  scale_y_continuous(limits = c(20,50), breaks = seq(20,50,10), expand = c(0,0)) +
+  theme_light()
+crab_5
 ```
 

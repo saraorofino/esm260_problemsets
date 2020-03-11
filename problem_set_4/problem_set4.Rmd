@@ -100,6 +100,26 @@ nuc_line <- ggplot(nuclear, aes(x=year, y=density)) +
   geom_line(aes(color = species)) + 
   facet_wrap(~location)
 nuc_line
+
+#Make a plot of all three species at Diablo for HW5:
+diablo <- nuclear %>%
+  filter(location == "diablo")
+
+diablo_plot <- ggplot(diablo, aes(x = year, y=density, color=species)) + 
+  geom_line(alpha = 0.7) + 
+  geom_vline(xintercept = 2010) + 
+  geom_smooth(method = "lm", formula = y ~ x, aes(color = species), se = FALSE, size = 0.8) +
+  scale_color_manual(values = c("darkorange", "darkcyan", "forestgreen"),
+                     labels = c("A", "B", "C"),
+                     name = "Species") + 
+  scale_y_continuous(limits = c(0,30), breaks = seq(0,30,10)) +
+  scale_x_continuous(limits =c(2000,2020), breaks = seq(2000,2020,5), expand = c(0,0)) +
+  labs(x = "Year", y = "Change in Density",
+       title = "Change in Density Over Time",
+       subtitle = "Diablo Cove") + 
+  theme_bw()
+diablo_plot
+  
 ```
  Diablo: Species A remains similar (increases a little maybe), Species B declines, Species C increases  
  Hyperion: Species A remains similar, Species B declines, Species C increases  
